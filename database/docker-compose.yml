@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw       # Root password
+      MYSQL_DATABASE: rater                # Database name
+      MYSQL_USER: test_user                  # User name
+      MYSQL_PASSWORD: test_password          # User password
+    ports:
+      - "3306:3306"                          # Exposing MySQL port
+    volumes:
+      - mysql_data:/var/lib/mysql            # Persistent volume for MySQL data
+
+volumes:
+  mysql_data:

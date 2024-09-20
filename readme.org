@@ -1,0 +1,62 @@
+#+title: Readme
+
+* Rete[r]
+Rater is a webframework in pytho
+
+** HOW TO DO
+
+create a new app by creating a new folder with the name of the app.
+
+- To create views create a new folder in the app folder named views (you can name it what ever).
+In the views you can use templateing
+#+begin_quote
+/app/views/index.html
+#+end_quote
+#+begin_src html
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Untitled</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        <!-- Place favicon.ico in the root directory -->
+    </head>
+    <body>
+		<h1>Hello {{name}}!</h1>
+    </body>
+</html>
+
+#+end_src
+
+- Create Controller to controll the views and routes
+ #+begin_quote
+/app/AppController.py
+ #+end_quote
+#+begin_src python
+from core.controller import *
+from fastapi.responses import HTMLResponse
+
+class AppController(Controller):
+    @route('/app/','GET')
+    async def main(self):
+        user = await self.model.get_user('alfred')
+        return HTMLResponse(self.render('index.html',{'name':user[0][0]}))
+
+#+end_src
+
+- To connect to a database and controll data create a model
+ #+begin_quote
+/app/AppModel.py
+ #+end_quote
+  #+begin_src python
+from core.model import *
+
+class AppModel(Model):
+    async def get_user(self,name):
+       return await self.connection.quert(f"select * from users where name='{name}'")
+
+  #+end_src
